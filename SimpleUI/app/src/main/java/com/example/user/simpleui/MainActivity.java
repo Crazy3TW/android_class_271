@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.maleRadioButton) {
-                    sex = "male";
+                    sex = "Male";
                 }else if(checkedId == R.id.femaleRadioButton){
-                    sex = "female";
+                    sex = "Female";
                 }else if(checkedId == R.id.otherRadioButton){
-                    sex = "other";
+                    sex = "Other";
                 }
             }
         });
