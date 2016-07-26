@@ -44,25 +44,25 @@
         android:id="@+id/radioGroup">
 
         <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Male"
+            android:layout_width="65dp"
+            android:layout_height="61dp"
             android:id="@+id/maleRadioButton"
-            android:checked="true" />
+            android:checked="true"
+            android:drawableRight="@drawable/malemark" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Female"
             android:id="@+id/femaleRadioButton"
-            android:checked="false" />
+            android:checked="false"
+            android:drawableRight="@drawable/femalemark" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other"
             android:id="@+id/otherRadioButton"
-            android:checked="false" />
+            android:checked="false"
+            android:drawableRight="@drawable/othermark" />
     </RadioGroup>
 
 </RelativeLayout>
