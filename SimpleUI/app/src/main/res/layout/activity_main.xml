@@ -22,6 +22,8 @@
         android:text="Submit"
         android:id="@+id/button2"
         android:onClick="submit"
+        android:background="@drawable/button"
+        android:textColor="#ffffff"
         android:layout_below="@+id/radioGroup"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
