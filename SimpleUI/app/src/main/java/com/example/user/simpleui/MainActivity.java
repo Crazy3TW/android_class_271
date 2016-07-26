@@ -4,12 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     EditText editText;
+    RadioGroup radioGroup;
+
+    String sex = "male";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,17 +22,26 @@ public class MainActivity extends AppCompatActivity {
 
         textView = (TextView)findViewById(R.id.textView);
         editText = (EditText)findViewById(R.id.editText);
+        radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.maleRadioButton) {
+                    sex = "male";
+                }else if(checkedId == R.id.femaleRadioButton){
+                    sex = "female";
+                }else if(checkedId == R.id.otherRadioButton){
+                    sex = "other";
+                }
+            }
+        });
     }
 
     public void submit(View view){
         String text = editText.getText().toString();
+        text = text + " Sex:" + sex;
         textView.setText(text);
         editText.setText("");
     }
-
-    public void start(View view){
-        textView.setText("Loading...");
-    }
-
 }
