@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editText;
     RadioGroup radioGroup;
 
-    String sex = "male";
+    String drink = "BlackTea";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +29,8 @@ public class MainActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.maleRadioButton) {
-                    sex = " Male";
-                }else if(checkedId == R.id.femaleRadioButton){
-                    sex = " Female";
-                }else if(checkedId == R.id.otherRadioButton){
-                    sex = " Other";
-                }
+                RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
+                drink = radioButton.getText().toString();
             }
         });
 
@@ -52,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void submit(View view){
         String text = editText.getText().toString();
-        text = text + " Sex:" + sex;
+        text = text + " order " + drink;
         textView.setText(text);
         editText.setText("");
     }
