@@ -11,6 +11,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView textView;
@@ -19,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
 
     String drink = "black tea";
+
+    List<String> orders = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupListView(){
         String[] data = new String[]{"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, orders);
         listView.setAdapter(adapter);
     }
 
@@ -63,5 +68,8 @@ public class MainActivity extends AppCompatActivity {
         text = text + " order " + drink;
         textView.setText(text);
         editText.setText("");
+
+        orders.add(text);
+        setupListView();
     }
 }
