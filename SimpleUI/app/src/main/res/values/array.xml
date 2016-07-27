@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="storeInfos">
+        <item>NTU Drink Vendor</item>
+        <item>CK Drink Vendor</item>
+        <item>TFG Drink Vendor</item>
+        <item>Kurumi Drink Vendor</item>
+    </string-array>
+</resources>
