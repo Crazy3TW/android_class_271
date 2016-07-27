@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editText;
     RadioGroup radioGroup;
 
-    String drink = "BlackTea";
+    String drink = "black tea";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

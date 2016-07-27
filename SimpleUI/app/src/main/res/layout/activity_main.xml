@@ -48,21 +48,21 @@
             android:layout_height="wrap_content"
             android:id="@+id/blackTeaRadioButton"
             android:checked="true"
-            android:text="BlackTea" />
+            android:text="black tea" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/greenTeaRadioButton"
             android:checked="false"
-            android:text="GreenTea" />
+            android:text="green tea" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/milkTeaRadioButton"
             android:checked="false"
-            android:text="MilkTea" />
+            android:text="milk tea" />
     </RadioGroup>
 
 </RelativeLayout>
