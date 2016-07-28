@@ -22,6 +22,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    final static int REQUEST_CODE_DRINK_MENU_ACTIVITY = 0;
+
     TextView textView;
     EditText editText;
     RadioGroup radioGroup;
@@ -108,7 +110,19 @@ public class MainActivity extends AppCompatActivity {
     public void goToMenu(View view){
         Intent intent = new Intent();
         intent.setClass(this, DrinkMenuActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_DRINK_MENU_ACTIVITY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_DRINK_MENU_ACTIVITY){
+            if(resultCode == RESULT_OK){
+                Toast.makeText(this, "Done", Toast.LENGTH_LONG).show();
+            }else if(resultCode == RESULT_CANCELED){
+                Toast.makeText(this, "Canceled", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
