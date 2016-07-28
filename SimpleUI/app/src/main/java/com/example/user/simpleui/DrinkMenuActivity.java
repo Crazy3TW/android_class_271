@@ -48,7 +48,6 @@ public class DrinkMenuActivity extends AppCompatActivity {
             drink.mPrice = mPrices[i];
             drink.imageID = images[i];
             drinkList.add(drink);
-
         }
     }
 
