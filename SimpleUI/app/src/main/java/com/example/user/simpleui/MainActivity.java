@@ -1,5 +1,6 @@
 package com.example.user.simpleui;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
 
         orders.add(order);
         setupListView();
+    }
+
+    public void goToMenu(View view){
+        Intent intent = new Intent();
+        intent.setClass(this, DrinkMenuActivity.class);
+        startActivity(intent);
     }
 
     @Override
