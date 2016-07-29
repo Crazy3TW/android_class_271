@@ -74,8 +74,8 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
 
         FragmentTransaction FT = fragmentManager.beginTransaction();
         DrinkOrderDialog dialog = DrinkOrderDialog.newInstance();
-        FT.replace(R.id.root, dialog);
-        FT.commit();
+
+        dialog.show(FT, "DrinkOrderDialog");
     }
 
     public void setupTotalTextView(){
