@@ -27,7 +27,7 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
     int[] images = new int[]{R.drawable.blacktea, R.drawable.milkblacktea, R.drawable.icetea, R.drawable.pearlmilktea};
 
     List<Drink> drinkList= new ArrayList<>();
-    List<Drink> drinkOrderList = new ArrayList<>();
+    ArrayList<DrinkOrder> drinkOrderList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,9 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
         totalTextView = (TextView)findViewById(R.id.totalTextView);
 
         setData();
+
+        drinkOrderList = getIntent().getParcelableArrayListExtra("drinkOrderList");
+        setupTotalTextView();
 
         setupDrinkMenuListView();
 
@@ -62,7 +65,7 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
         drinkMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Drink drink = (Drink)parent.getAdapter().getItem(position);
+                Drink drink = (Drink) parent.getAdapter().getItem(position);
                 showDrinkOrderDialog(drink);
                 setupTotalTextView();
             }
@@ -70,18 +73,28 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
     }
 
     private void showDrinkOrderDialog(Drink drink){
+
+        DrinkOrder order = new DrinkOrder(drink);
+
+        for(DrinkOrder drinkOrder: drinkOrderList){
+            if(drinkOrder.drink.name.equals(drink.name)){
+                order = drinkOrder;
+                break;
+            }
+        }
+
         FragmentManager fragmentManager = getFragmentManager();
 
         FragmentTransaction FT = fragmentManager.beginTransaction();
-        DrinkOrderDialog dialog = DrinkOrderDialog.newInstance(drink);
+        DrinkOrderDialog dialog = DrinkOrderDialog.newInstance(order);
 
         dialog.show(FT, "DrinkOrderDialog");
     }
 
     public void setupTotalTextView(){
         int total = 0;
-        for(Drink drink :drinkOrderList){
-            total += drink.mPrice;
+        for(DrinkOrder drinkOrder :drinkOrderList){
+            total += drinkOrder.total();
         }
 
         totalTextView.setText(String.valueOf(total));
@@ -89,6 +102,7 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
 
     public void done(View view){
         Intent intent = new Intent();
+        intent.putExtra("results", drinkOrderList);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -136,7 +150,16 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
     }
 
     @Override
-    public void onDrinkOrderFinished() {
+    public void onDrinkOrderFinished(DrinkOrder drinkOrder) {
+        for(int i = 0 ; i < drinkOrderList.size() ; i++) {
+            if (drinkOrderList.get(i).drink.name.equals(drinkOrder.drink.name)) {
+                drinkOrderList.set(i, drinkOrder);
+                setupTotalTextView();
+                return;
+            }
+        }
 
+            drinkOrderList.add(drinkOrder);
+            setupTotalTextView();
     }
 }
