@@ -85,6 +85,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                editor.putInt("spinner", spinner.getSelectedItemPosition());
+                editor.apply();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         setupListView();
         setupSpinner();
 
@@ -94,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void restoreUIState(){
+
         editText.setText(sharedPreferences.getString("editText", ""));
+        spinner.setSelection(sharedPreferences.getInt("spinner", 0));
     }
 
     private void setupListView(){
