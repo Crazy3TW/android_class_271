@@ -19,6 +19,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        setupOrderHistory();
         setupListView();
         setupSpinner();
 
@@ -108,6 +112,23 @@ public class MainActivity extends AppCompatActivity {
 
         editText.setText(sharedPreferences.getString("editText", ""));
         spinner.setSelection(sharedPreferences.getInt("spinner", 0));
+    }
+
+    private void setupOrderHistory(){
+        String orderDatas = Utils.readFile(this, "history");
+        String[] orderData = orderDatas.split("\n");
+        Gson gson = new Gson();
+
+        for(String data : orderData){
+            try {
+                Order order = gson.fromJson(data, Order.class);
+                if(order != null){
+                    orders.add(order);
+                }
+            }catch (JsonSyntaxException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setupListView(){
@@ -135,6 +156,10 @@ public class MainActivity extends AppCompatActivity {
         order.storeInfo = (String)spinner.getSelectedItem();
 
         orders.add(order);
+
+        Gson gson = new Gson();
+        String orderData = gson.toJson(order);
+        Utils.writeFile(this, "history", orderData + "\n");
 
         drinkOrders = new ArrayList<>();
         setupListView();
