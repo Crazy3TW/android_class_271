@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Order order = (Order) parent.getAdapter().getItem(position);
 //                Toast.makeText(MainActivity.this, "You clicked on " + order.note, Toast.LENGTH_SHORT).show();
-                Snackbar.make(parent, "You clicked on " + order.note, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(parent, "You clicked on " + order.getNote(), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -105,35 +105,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setupOrderHistory();
+//        setupOrderHistory();
         setupListView();
         setupSpinner();
 
         restoreUIState();
 
-        final ParseObject parseObject = new ParseObject("TestObject");
-        parseObject.put("foo", "checked");
-        parseObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
-                } else {
-                    e.printStackTrace();
-                    Toast.makeText(MainActivity.this, "Fail", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("TestObject");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                for (ParseObject parseObject1: objects){
-                    Toast.makeText(MainActivity.this, parseObject.getString("foo"), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        ParseObject parseObject = new ParseObject("TestObject");
+//        parseObject.put("foo", "checked");
+//        parseObject.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
+//                } else {
+//                    e.printStackTrace();
+//                    Toast.makeText(MainActivity.this, "Fail", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//
+//        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("TestObject");
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> objects, ParseException e) {
+//                for (ParseObject parseObject1: objects){
+//                    Toast.makeText(MainActivity.this, parseObject.getString("foo"), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         Log.d("debug", "MainActivity OnCreate");
     }
@@ -181,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
         editText.setText("");
 
         Order order = new Order();
-        order.note = text;
-        order.drinkOrders = drinkOrders;
-        order.storeInfo = (String)spinner.getSelectedItem();
+        order.setNote(text);
+        order.setDrinkOrders(drinkOrders);;
+        order.setStoreInfo((String)spinner.getSelectedItem());
 
         orders.add(order);
 
