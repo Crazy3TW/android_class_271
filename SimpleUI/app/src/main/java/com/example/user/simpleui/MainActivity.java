@@ -21,6 +21,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("spinner", spinner.getSelectedItemPosition());
                 editor.apply();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -104,6 +110,30 @@ public class MainActivity extends AppCompatActivity {
         setupSpinner();
 
         restoreUIState();
+
+        final ParseObject parseObject = new ParseObject("TestObject");
+        parseObject.put("foo", "checked");
+        parseObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
+                } else {
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Fail", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("TestObject");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                for (ParseObject parseObject1: objects){
+                    Toast.makeText(MainActivity.this, parseObject.getString("foo"), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         Log.d("debug", "MainActivity OnCreate");
     }
