@@ -3,8 +3,10 @@ package com.example.user.simpleui;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.parse.ParseException;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 /**
  * Created by user on 2016/8/1.
@@ -21,11 +23,21 @@ public class DrinkOrder extends ParseObject implements Parcelable {
     static final String NOTE_COL = "note";
 
     public DrinkOrder(Drink drink){
+        super();
         this.setDrink(drink);
     }
 
+    public DrinkOrder(){
+        super();
+    }
+
     public int total(){
-        return getDrink().lPrice * getlNumber() + getDrink().mPrice * getmNumber();
+        Drink drink = getDrink();
+        if(drink != null){
+            return getDrink().getlPrice() * getlNumber() + getDrink().getmPrice() * getmNumber();
+        }else{
+            return  0;
+        }
     }
 
     @Override
@@ -55,7 +67,8 @@ public class DrinkOrder extends ParseObject implements Parcelable {
     }
 
     protected DrinkOrder(Parcel in) {
-        this.setDrink(in.readParcelable(Drink.class.getClassLoader()));
+        super();
+        this.setDrink((Drink)in.readParcelable(Drink.class.getClassLoader()));
         this.setmNumber(in.readInt());
         this.setlNumber(in.readInt());
         this.setIce(in.readString());
@@ -69,8 +82,9 @@ public class DrinkOrder extends ParseObject implements Parcelable {
             int isDraft = source.readInt();
             if(isDraft == 0){
                 return new DrinkOrder(source);
+            }else{
+                return getDrinkOrderFromCache(source.readString());
             }
-            return new DrinkOrder(source);
         }
 
         @Override
@@ -80,7 +94,7 @@ public class DrinkOrder extends ParseObject implements Parcelable {
     };
 
     public Drink getDrink() {
-        return getParseObject(DRINK_COL);
+        return (Drink)getParseObject(DRINK_COL);
     }
 
     public void setDrink(Drink drink) {
@@ -125,5 +139,17 @@ public class DrinkOrder extends ParseObject implements Parcelable {
 
     public void setNote(String note) {
         put(NOTE_COL, note);
+    }
+
+    public static ParseQuery<DrinkOrder> getQuery() { return  ParseQuery.getQuery(DrinkOrder.class);}
+
+    public static DrinkOrder getDrinkOrderFromCache(String objectID){
+        try{
+            DrinkOrder drinkOrder = getQuery().fromLocalDatastore().get(objectID);
+            return drinkOrder;
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        return DrinkOrder.createWithoutData(DrinkOrder.class, objectID);
     }
 }

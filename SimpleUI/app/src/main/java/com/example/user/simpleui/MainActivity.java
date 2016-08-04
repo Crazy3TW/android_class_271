@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -88,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Order order = (Order) parent.getAdapter().getItem(position);
+                goToOrderDetail(order);
 //                Toast.makeText(MainActivity.this, "You clicked on " + order.note, Toast.LENGTH_SHORT).show();
-                Snackbar.make(parent, "You clicked on " + order.getNote(), Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(parent, "You clicked on " + order.getNote(), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -105,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        setupOrderHistory();
-        setupListView();
+        setupOrderHistory();
+//        setupListView();
         setupSpinner();
 
         restoreUIState();
@@ -145,20 +147,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupOrderHistory(){
-        String orderDatas = Utils.readFile(this, "history");
-        String[] orderData = orderDatas.split("\n");
-        Gson gson = new Gson();
-
-        for(String data : orderData){
-            try {
-                Order order = gson.fromJson(data, Order.class);
-                if(order != null){
-                    orders.add(order);
+//        String orderDatas = Utils.readFile(this, "history");
+//        String[] orderData = orderDatas.split("\n");
+//        Gson gson = new Gson();
+//
+//        for(String data : orderData){
+//            try {
+//                Order order = gson.fromJson(data, Order.class);
+//                if(order != null){
+//                    orders.add(order);
+//                }
+//            }catch (JsonSyntaxException e){
+//                e.printStackTrace();
+//            }
+//        }
+        Order.getOrdersFromLocalThenRemote(new FindCallback<Order>() {
+            @Override
+            public void done(List<Order> objects, ParseException e) {
+                if(e == null){
+                    orders = objects;
+                    setupListView();
                 }
-            }catch (JsonSyntaxException e){
-                e.printStackTrace();
             }
-        }
+        });
     }
 
     private void setupListView(){
@@ -187,9 +198,12 @@ public class MainActivity extends AppCompatActivity {
 
         orders.add(order);
 
-        Gson gson = new Gson();
-        String orderData = gson.toJson(order);
-        Utils.writeFile(this, "history", orderData + "\n");
+//        Gson gson = new Gson();
+//        String orderData = gson.toJson(order);
+//        Utils.writeFile(this, "history", orderData + "\n");
+
+        order.saveEventually();
+        order.pinInBackground("Order");
 
         drinkOrders = new ArrayList<>();
         setupListView();
@@ -200,6 +214,13 @@ public class MainActivity extends AppCompatActivity {
         intent.setClass(this, DrinkMenuActivity.class);
         intent.putExtra("drinkOrderList", drinkOrders);
         startActivityForResult(intent, REQUEST_CODE_DRINK_MENU_ACTIVITY);
+    }
+
+    public void goToOrderDetail(Order order){
+        Intent intent = new Intent();
+        intent.setClass(this, OrderDetailActivity.class);
+        intent.putExtra("order", order);
+        startActivity(intent);
     }
 
     @Override
