@@ -71,8 +71,8 @@ public class Drink extends ParseObject implements Parcelable {
         return getString(NAME_COL);
     }
 
-    public void setName(String name){
-        this.put(NAME_COL, name);
+    public void setName(String Name){
+        this.put(NAME_COL, Name);
     }
 
     public int getlPrice(){
@@ -95,13 +95,13 @@ public class Drink extends ParseObject implements Parcelable {
         return getParseFile("image");
     }
 
-    public static ParseQuery<Drink> getQuerry(){
+    public static ParseQuery<Drink> getQuery(){
         return ParseQuery.getQuery(Drink.class);
     }
 
     public static Drink getDrinkFromCache(String objectID){
         try {
-            Drink drink = getQuerry().fromLocalDatastore().get(objectID);
+            Drink drink = getQuery().fromLocalDatastore().get(objectID);
             return drink;
         }catch (com.parse.ParseException e){
             return Drink.createWithoutData(Drink.class, objectID);
@@ -109,8 +109,8 @@ public class Drink extends ParseObject implements Parcelable {
     }
 
     public static void getDrinkFromLocalThenRemote(final FindCallback callback){
-        getQuerry().fromLocalDatastore().findInBackground(callback);
-        getQuerry().findInBackground(new FindCallback<Drink>() {
+        getQuery().fromLocalDatastore().findInBackground(callback);
+        getQuery().findInBackground(new FindCallback<Drink>() {
             @Override
             public void done(final List<Drink> objects, com.parse.ParseException e) {
                 if(e == null){
